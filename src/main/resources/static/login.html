@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>Signin Template for Bootstrap</title>
+		<!-- Bootstrap core CSS -->
+		<link href="asserts/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Custom styles for this template -->
+		<link href="asserts/css/signin.css" rel="stylesheet">
+		<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	</head>
+
+	<body class="text-center">
+	<div id="login_app" class="form-signin">
+<!--		<form class="form-signin" action="list.html">-->
+			<img class="mb-4" src="asserts/img/bootstrap-solid.svg" alt="" width="72" height="72">
+			<h1 class="h3 mb-3 font-weight-normal">请登录</h1>
+
+			<!--错误信息提示框-->
+			<div  v-text="error" style="color: red"></div>
+
+			<label class="sr-only">Username</label>
+			<input type="text" class="form-control" v-model="user.username" placeholder="Username" required="" autofocus="">
+			<label class="sr-only">Password</label>
+			<input type="password" class="form-control" v-model="user.password" placeholder="Password" required="">
+			<div class="checkbox mb-3">
+				<label>
+<!--					<input placeholder="验证码" style="width: 150px;height: 45px;color: #fff; background-color: rgba(255, 255, 255, .1); border-color: rgba(255, 255, 255, .1);"  type="text" >-->
+<!--					<img src="" width="120px" height="45px">-->
+       			 </label>
+			</div>
+			<button class="btn btn-lg btn-primary btn-block" type="submit" @click="login">登录</button><br>
+			<input type="button" value="还没账户？请注册"  style="color: white; border-color: rgba(255, 255, 255, .1);background-color: rgba(0, 123, 255) " onclick=location.href="/login.html" >
+			<p class="mt-5 mb-3 text-muted">© 2017-2021</p>
+<!--		</form>-->
+
+	</div>
+
+	<script>
+		var app = new Vue({
+			el:"#login_app",
+			data:{
+				error:"",
+				user:{
+
+				}
+			},
+			methods:{
+				login:function () {
+					var that = this;
+					axios.post("http://localhost:8080/user/login",this.user)
+							.then(function (response) {
+								// console.log(response.data);
+								if(response.data.state){
+									//登陆成功
+									localStorage.setItem("user",JSON.stringify(response.data.user));//将返回的登陆成功的用户信息转为json
+									location.href="/list.html";
+								}else{
+									//失败
+									that.error = response.data.message;
+								}
+							});
+				},
+			}
+		})
+	</script>
+	</body>
+
+</html>

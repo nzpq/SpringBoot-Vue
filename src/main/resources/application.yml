@@ -1,0 +1,46 @@
+spring:
+  datasource:
+      username: root
+      password: 123456
+      url: jdbc:mysql://localhost:3306/springboot-vue?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&serverTimezone=GMT%2B8
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource #指定数据源类型
+      #   数据源其他配置
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+#      filters: stat,wall,log4j
+      maxPoolPreparedStatementPerConnectionSize: 20
+      useGlobalDataSourceStat: true
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  resources:
+    static-locations: classpath:/static/,file:${photo.dir}
+#      schema:
+#          - classpath:sql/department.sql
+#          - classpath:sql/employee.sql
+#      initialization-mode: always # 使用schema时，加上这条配置
+
+# 配置mybatis mapper的位置
+mybatis:
+    config-location: classpath:mybatis/mybatis-config.xml # mybatis全局配置
+    mapper-locations: classpath:mybatis/mapper/*.xml
+    type-aliases-package: com.nzpq.entity # 配置别名
+
+
+# 配置日志级别
+logging:
+    level:
+         com.nzpq.mapper: debug
+         com.nzpq.service: info
+         com.nzpq.controller: info
+# 照片存放路径
+photo.dir: D:\\IdeaProjects\\springboot-vue\\src\\main\\resources\\photo

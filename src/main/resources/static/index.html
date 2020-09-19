@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>用户注册</title>
+    <!-- Bootstrap core CSS -->
+    <link href="asserts/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="asserts/css/signin.css" rel="stylesheet">
+
+</head>
+
+<body class="text-center">
+<div id="register_app" class="form-signin">
+<!--    <form class="form-signin" >-->
+        <img class="mb-4" src="asserts/img/bootstrap-solid.svg" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">注册</h1>
+
+        <!--错误信息提示框-->
+        <div  v-text="error" style="color: red"></div>
+        <label class="sr-only"></label>
+        <input type="text" class="form-control" placeholder="Username" v-model="user.username" required="" autofocus="">
+        <label class="sr-only">Password</label>
+        <input type="password" class="form-control" placeholder="Password" v-model="user.password" required="">
+        <div class="form-control">
+            性别：
+            <input type="radio" value="男" v-model="user.sex" name="sex">男
+            <input type="radio" value="女" v-model="user.sex" name="sex">女
+        </div>
+
+        <div class="checkbox mb-3">
+            <label>
+<!--                <input placeholder="验证码" style="width: 150px;height: 45px;color: #fff; background-color: rgba(255, 255, 255, .1); border-color: rgba(255, 255, 255, .1);"  type="text" >-->
+<!--                <img src="asserts/img/bootstrap-solid.svg" width="120px" height="45px" title="看不清？点击换一张">-->
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" @click="register">注册</button><br>
+    <input type="button" value="已有账户？请登录"  style="color: white; border-color: rgba(255, 255, 255, .1);background-color: rgba(0, 123, 255) " onclick=location.href="/login.html" >
+        <p class="mt-5 mb-3 text-muted">© 2017-2021</p>
+<!--    </form>-->
+</div>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    var app = new Vue({
+        el:"#register_app",
+        data:{
+            user:{
+                sex:"男"
+            },
+            error:""
+        },
+        methods:{
+            //注册
+            register:function () {
+                var that = this;
+                axios.post("http://localhost:8080/user/register",this.user)
+                    .then(function (response) {
+                        // console.log(response);
+                        if(response.data.state){
+                           //注册成功
+                            that.error = "";
+                            alert(that.error = response.data.message);
+                            location.href="/login.html"
+                        }else{
+                            //注册失败
+                            that.error = response.data.message;
+
+                        }
+                    });
+            }
+        }
+    })
+</script>
+
+</body>
+
+</html>
